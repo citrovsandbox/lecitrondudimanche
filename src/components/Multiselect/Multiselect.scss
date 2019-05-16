@@ -28,7 +28,9 @@
 #tagLine {
   width:90%; min-height:50px;
   display:flex;
-  align-items:center;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
   padding-top:5px;
   padding-bottom:5px;
   display: flex;
@@ -39,6 +41,11 @@
   display:flex;
   align-items:center;justify-content:center;
   transition:all .33s ease;
+}
+#tagContainer {
+  margin-bottom:10px;
+  display:flex;
+  flex-wrap: wrap;
 }
 #noTagText {
   color:rgba(197, 195, 195, 0.5);
@@ -76,4 +83,39 @@
 {
   background-color: rgb(197, 195, 195);
   border-radius:4px;
+}
+#filterInputContainer {
+  position:relative;
+  width:calc(100% - 20px);
+}
+#filterInput {
+  position:relative;
+  width:100%;
+  border:none;
+  margin-left:10px;
+  padding:5px;
+  background-color: transparent;
+  color: #333;
+  font-size:13px;
+}
+#autocomplete {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  padding: 0 5px;
+  // border: 2px solid #ddd;
+  cursor: text;
+  color: #999;
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+}
+// #filterInput:focus,
+#autocomplete:focus{
+  outline: none;
+  border-color: #aaa;
+}
+
+.bg-red {
+  background:red !important;
 }

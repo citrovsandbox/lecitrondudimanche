@@ -1,16 +1,41 @@
 <div id="multiSelect">
-  <div id="tagLineContainer" :class="isSelecting ? 'br-top' : 'br-full'" @click="onTagLineClick">
+  <div id="tagLineContainer" :class="isSelecting ? 'br-top' : 'br-full'">
     <div id="tagLine">
-      <span id="noTagText">{{ tagsText }}</span>
-      <Tag v-for="tag in tags" :tag="tag" @delete="onDeleteTag"></Tag>                                            
+      <div id="tagContainer" v-if="tagsAreFilled">
+          <Tag 
+            v-for="(tag, index) in tags" 
+            :tag="tag" 
+            :index="index" 
+            @delete="onDeleteTag">
+          </Tag>
+      </div>
+      
+      <div id="filterInputContainer">
+          <div id="autocomplete">{{ autoComplete }}</div>
+          <input 
+            id="filterInput" 
+            autocomplete="off" 
+            placeholder="Saisir un utilisateur"
+            type="text" 
+            v-model="filterVal" 
+            @focus="onInputFocus" 
+            @keydown.tab.prevent="onTabPress"
+            @keydown.enter="onEnterPress" 
+            @blur="onInputLeave"
+            >
+      </div>                           
     </div>
     <div id="tagLineStateIndicator" :class="isSelecting ? 'rotate' : ''">
       <img id="selectIcon" src="./select-arrow.png">
     </div>
   </div>
-  
 
-  <div id="choiceList" v-if="isSelecting">
-    <UserItem v-for="option in optionsByName" :option="option" @selected="onUserItemSelected"></UserItem>
+  <div id="choiceList" v-show="isSelecting">
+    <UserItem 
+      v-for="(person, index) in personsByName" 
+      :option="person" 
+      :index="index" 
+      @selected="onUserItemSelected">
+    </UserItem>
   </div>
 </div>

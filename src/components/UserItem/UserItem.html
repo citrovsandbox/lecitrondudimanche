@@ -1,4 +1,4 @@
-<div class="user_item_row" @click="onUserItemPress">
+<div class="user_item_row" @click="onUserItemPress" :class="index === 0 ? 'first' : ''">
   <span class="user_item_tag">{{ option.username }}</span>
   <span class="user_item_identity">{{ option.name }}</span>
 </div>

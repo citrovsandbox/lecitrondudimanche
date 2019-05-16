@@ -1,9 +1,8 @@
 export default ({
   name: 'Tag',
   props: {
-    tag:{type:Object, default:function () {
-      return {}
-    }}
+    tag:{type:Object, default:{}},
+    index:{type:Number}
   },
   data() {
     return {
@@ -12,7 +11,7 @@ export default ({
   },
   methods:{
     onTagExitPress () {
-      this.$emit("delete", this.tag);
+      this.$emit("delete", {tag:this.tag, index:this.index});
     }
   }
 });

@@ -1,9 +1,8 @@
 export default ({
   name: 'UserItem',
   props: {
-    option:{type:Object, default:function () {
-      return {}
-    }}
+    option:{type:Object, default:{}},
+    index:Number
   },
   data() {
     return {
@@ -15,7 +14,7 @@ export default ({
       this.isSelecting = !this.isSelecting;
     },
     onUserItemPress () {
-      this.$emit("selected", this.option);
+      this.$emit("selected", {user:this.option, index:this.index});
     }
   }
 });
