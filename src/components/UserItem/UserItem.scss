@@ -1,0 +1,24 @@
+.user_item_row {
+  width:100%; height:50px;
+  background:white;
+  display:flex;
+  align-items:center;justify-content:space-between;
+  transition:all .25s ease;
+}
+.user_item_row:hover {
+  cursor:pointer;
+  background:#1499d73b;
+}
+.user_item_identity {
+  margin-right:10px;
+  font-size:12px;
+  font-weight:bold;
+}
+.user_item_tag {
+  margin-left:10px;
+  font-size:10px;
+  background:#149ad7;
+  padding:4px;
+  border-radius:2px;
+  color:white;
+}
