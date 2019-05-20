@@ -3,8 +3,8 @@
     <div id="tagLine">
       <div id="tagContainer" v-if="tagsAreFilled">
           <Tag 
-            v-for="(tag, index) in tags" 
-            :tag="tag" 
+            v-for="(user, index) in usersSelected" 
+            :tag="user" 
             :index="index" 
             @delete="onDeleteTag">
           </Tag>
@@ -30,12 +30,14 @@
     </div>
   </div>
 
-  <div id="choiceList" v-show="isSelecting">
-    <UserItem 
-      v-for="(person, index) in personsByName" 
-      :option="person" 
-      :index="index" 
-      @selected="onUserItemSelected">
-    </UserItem>
-  </div>
+  <transition name="fade">
+    <div id="choiceList" v-show="isSelecting">
+      <UserItem 
+        v-for="(person, index) in usersByName" 
+        :option="person" 
+        :index="index" 
+        @selected="onUserItemSelected">
+      </UserItem>
+    </div>
+  </transition>
 </div>

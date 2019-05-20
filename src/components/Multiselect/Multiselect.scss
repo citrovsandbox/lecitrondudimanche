@@ -2,12 +2,9 @@
   width:400px; min-height:50px;
   margin:auto;
 }
-
 #filterContainer {
   width:100%; height:50px;
-  background:red;
 }
-
 #choiceList {
   width:100%; max-height:300px;
   overflow:auto;
@@ -21,9 +18,6 @@
   align-items:center;
   justify-content:space-between;
   border:0.5px solid rgba(197, 195, 195, 0.5);
-}
-#tagLineContainer:hover {
-  cursor:pointer;
 }
 #tagLine {
   width:90%; min-height:50px;
@@ -66,7 +60,6 @@
 .br-full {
   border-radius:5px;
 }
-
 #choiceList::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
@@ -103,19 +96,23 @@
   top: 5px;
   left: 10px;
   padding: 0 5px;
-  // border: 2px solid #ddd;
   cursor: text;
   color: #999;
   width: 100%;
   text-align: left;
   font-size: 13px;
 }
-// #filterInput:focus,
 #autocomplete:focus{
   outline: none;
   border-color: #aaa;
 }
-
-.bg-red {
-  background:red !important;
+/**
+* Transition
+*/
+// fade
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .33s;
+}
+.fade-enter, .fade-leave-active {
+  opacity:0;
 }

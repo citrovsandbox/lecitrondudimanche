@@ -51,7 +51,7 @@ export default {
   }
 }
 .logo {
-  width:150px; margin-bottom:50px;
+  width:100px; margin-bottom:20px;
   margin-top:50px;
 }
 </style>

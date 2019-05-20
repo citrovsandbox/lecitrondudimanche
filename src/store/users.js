@@ -5,6 +5,8 @@ const userRoute = `${config.uris.ROOT}${config.uris.users}`;
 export default ({
   state: {
     users: [],
+    usersSelected:[],
+    usersLeft:[],
     error: {},
     loading: false,
   },
@@ -13,6 +15,9 @@ export default ({
     'error:users': (state, payload) => { state.error = payload; },
     'loading:users': (state, payload) => { state.loading = payload; },
     'error:users:reset': (state) => { state.error = {}; },
+
+    'set:usersSelected': (state, payload) => { state.usersSelected = payload; },
+    'set:usersLeft': (state, payload) => { state.usersLeft = payload; }
   },
   actions: {
     'get:users': ({ commit }) => {
@@ -21,12 +26,13 @@ export default ({
       return fetch(userRoute).then((response) => {
         response.json().then((json) => {
           commit('set:users', json);
+          commit('set:usersLeft', json);
           commit('loading:users', false);
         })
           .catch(error => commit('error::users', error));
       })
         .catch(error => commit('error::users', error));
-    },
+    }
   },
   getters: {},
 });

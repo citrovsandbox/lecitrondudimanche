@@ -11,17 +11,16 @@ export default {
 
   data () {
     return {
-      persons:[...this.options],
       isSelecting:false,
-      tags:[],
       filterVal:"",
-      autoComplete:""
+      autoComplete:"",
+      store:this.$store
     }
   },
 
   watch:{
     options:function (val) {
-      this.persons = val;
+      this.$store.commit('set:usersLeft', val);
     },
     filterVal (val) {
       this._filterChoices(val);
@@ -30,20 +29,33 @@ export default {
   },
 
   computed: {
-    tagsText () {
-      return this.tags.length === 0 ? "Cliquez pour choisir" : ""
-    },
     tagsAreFilled() {
-      return this.tags.length > 0 ? true : false;
+      return this.usersSelected.length > 0 ? true : false;
     },
-    personsByName () {
-      let aOptions = this.persons;
+    usersByName () {
+      let aOptions = this.usersLeft;
       aOptions.sort((a, b) => {
         if(a.username < b.username) { return -1; }
         if(a.username > b.username) { return 1; }
         return 0;
-      })
+      });
       return aOptions;
+    },
+    usersLeft: {
+      get:function () {
+        return this.$store.state.users.usersLeft;
+      },
+      set(newVal) {
+        return this.$store.commit("set:usersLeft", newVal);
+      }
+    },
+    usersSelected: {
+      get:function () {
+        return this.$store.state.users.usersSelected;
+      },
+      set(newVal) {
+        return this.$store.commit("set:usersSelected", newVal);
+      }
     }
   },
 
@@ -55,16 +67,14 @@ export default {
       this.isSelecting = !this.isSelecting;
     },
     onUserItemSelected (context) {
-      let aUsers = this.persons;
-      aUsers.splice(context.index, 1);
-      this.persons = aUsers;
-      this.tags.push(context.user);
+      this.usersLeft.splice(context.index, 1);
+      this.usersSelected.push(context.user);
+      this._autoComplete(this.filterVal);
     },
     onDeleteTag (context) {
-      let aTags = this.tags;
-      aTags.splice(context.index, 1);
-      this.tags = aTags;
-      this.persons.push(context.tag);
+      this.usersSelected.splice(context.index, 1)
+      this.usersLeft.push(context.tag);
+      this._autoComplete(this.filterVal);
     },
     onInputFocus () {
       this.isSelecting = !this.isSelecting;
@@ -76,25 +86,23 @@ export default {
     },
     onTabPress () {
       let sAutocomplete = this.autoComplete;
-      let aUsers = this.persons;
-      let aNewPersons = [];
+      let aUsers = this.usersLeft;
       if(sAutocomplete !== "") {
-        for(var i in aUsers) {
-          if(aUsers[i].username === sAutocomplete) {
-            this.tags.push(aUsers[i]);
-          } else {
-            aNewPersons.push(aUsers[i]);
-          }
-        }
-        this.persons = aNewPersons;
-        this.autoComplete = "";
-        this.filterVal = "";
+        let oSuggestedUser = aUsers.find(user => user.username = sAutocomplete);
+        let iSuggestedUserIndex = aUsers.findIndex(user => user.username = sAutocomplete);
+        this.usersSelected.push(oSuggestedUser);
+        this.usersLeft.splice(iSuggestedUserIndex, 1);
       }
+      this.autoComplete = "";
+      this.filterVal = "";
+      
     },
     onEnterPress () {
-      this.tags.push(this.persons[0]);
-      this.persons.splice(0,1);
-      this.autoComplete = "";
+      if(this.usersLeft[0]) {
+        this.usersSelected.push(this.usersLeft[0]);
+        this.usersLeft.splice(0,1);
+        this.autoComplete = "";
+      }
     },
     onSmallArrowPress () {
       this.isSelecting = !this.isSelecting;
@@ -104,22 +112,23 @@ export default {
      */
     _filterChoices (val) {
       let aUsers = this.options;
-      let aTags = this.tags.map(element => element.username);
-
-      aUsers = aUsers.filter(user => user.username.toLowerCase().includes(val.toLowerCase())).filter(user => !aTags.includes(user.username));
-      this.persons = aUsers;
+      let aTags = this.usersSelected.map(element => element.username);
+      this.usersLeft = aUsers.filter(user => user.username.toLowerCase().includes(val.toLowerCase())).filter(user => !aTags.includes(user.username));
     },
     _autoComplete (val) {
       if(val !== "") {
-        let aUsers = this.persons;
-        for(var i in aUsers) {
-          if(aUsers[i].username.startsWith(val)) {
-            this.autoComplete = aUsers[i].username;
-            return;
-          }
+        let aUsers = this.usersLeft;
+        let oSuggestedUser = aUsers.find(user => user.username.startsWith(val));
+        if(oSuggestedUser) {
+          this.autoComplete = oSuggestedUser.username;
+          return;
+        } 
+        else {
+          this.autoComplete = "";
         }
+      } else {
+        this.autoComplete = "";
       }
-      this.autoComplete = "";
     }
   }
 };
